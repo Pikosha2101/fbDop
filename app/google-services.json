@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "103858469314",
+    "project_id": "fbdop-49e5d",
+    "storage_bucket": "fbdop-49e5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103858469314:android:6ce2535bc40ee7afdbbe5b",
+        "android_client_info": {
+          "package_name": "com.example.fbdop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXBps5GDjUWWt87uIFcxROu4kZkgAhAmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
