@@ -35,7 +35,8 @@ class RegistrationFragment : Fragment(R.layout.registration_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
         regButton.setOnClickListener {
-            if (emailEditText.text.toString().isNotEmpty() && passwordEditText.text.toString().isNotEmpty()) {
+            if (emailEditText.text.toString().isNotEmpty() && passwordEditText.text.toString().isNotEmpty()
+                && adressEditText.text.toString().isNotEmpty() && phoneNum.text.toString().isNotEmpty()) {
                 auth.createUserWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
@@ -44,13 +45,17 @@ class RegistrationFragment : Fragment(R.layout.registration_fragment) {
                                 saveUserInfo(userId, emailEditText.text.toString(), adressEditText.text.toString(), phoneNum.text.toString())
                             }
                             Toast.makeText(requireContext(), "Регистрация успешна", Toast.LENGTH_SHORT).show()
-
                         } else {
-                            Toast.makeText(requireContext(), "Ошибка регистрации", Toast.LENGTH_SHORT).show()
+                            val ex = task.exception.toString()
+                            if (ex.contains("already")){
+                                Toast.makeText(requireContext(), "Почта уже существует", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(requireContext(), "Некорректный формат почты", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
             } else {
-                Toast.makeText(requireContext(), "Введите email и пароль", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Введите данные", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -81,10 +86,10 @@ class RegistrationFragment : Fragment(R.layout.registration_fragment) {
         db.collection("users").document(userId)
             .set(user)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "ГУД", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "Данные записаны", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(requireContext(), "Не гуд", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(requireContext(), "Данные не записаны", Toast.LENGTH_SHORT).show()
             }
     }
 }

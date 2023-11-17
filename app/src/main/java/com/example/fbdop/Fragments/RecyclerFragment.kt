@@ -1,6 +1,7 @@
 package com.example.fbdop.Fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.example.fbdop.databinding.RecyclerFragmentBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
 
 class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductModel> {
     private var _binding : RecyclerFragmentBinding? = null
@@ -24,7 +26,7 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
     private lateinit var auth: FirebaseAuth
 
     private val adapter = RecyclerAdapter(this)
-
+    private val db = Firebase.firestore
     private val shopList : MutableList<ProductModel> = mutableListOf()
     private lateinit var email : String
     override fun onCreateView(
@@ -34,8 +36,39 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
         _binding = RecyclerFragmentBinding.inflate(inflater, container, false)
         auth = Firebase.auth
         email = arguments?.getString("email")!!
-        adapter.setList(
-            listOf(
+
+        val list : MutableList<ProductModel> = mutableListOf()
+
+        try {
+            db.collection("products")
+                .get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (document in querySnapshot) {
+                        list.add(
+                            ProductModel(
+                                (document.getString("id") ?: "").toInt(),
+                                document.getString("image") ?: "",
+                                document.getString("name") ?: "",
+                                (document.getString("price") ?: "").toInt()
+                            )
+                        )
+                    }
+                    adapter.setList(list)
+                    binding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+                    binding.recyclerView.adapter = adapter
+                }
+
+                .addOnFailureListener { exception ->
+                    Toast.makeText(requireContext(), "Ошибка при получении данных пользователя", Toast.LENGTH_SHORT).show()
+                    Log.e("FirestoreQuery", "Error getting user data", exception)
+                }
+        } catch (ex : Exception){
+            Toast.makeText(requireContext(), "Ошибка 1", Toast.LENGTH_SHORT).show()
+        }
+
+
+        /*adapter.setList(
+            *//*listOf(
                 ProductModel(
                     1,
                     "https://cdn-icons-png.flaticon.com/512/6034/6034226.png",
@@ -66,8 +99,9 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
                     "Кутчуп",
                     150
                 )
-            )
-        )
+            )*//*
+            list
+        )*/
         return binding.root
     }
 
@@ -87,8 +121,8 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
             findNavController().navigate(R.id.action_recyclerFragment_to_shopFragment, bundle)
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        recyclerView.adapter = adapter
+        /*recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        recyclerView.adapter = adapter*/
     }
 
 

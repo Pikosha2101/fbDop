@@ -36,16 +36,25 @@ class AuthFragment : Fragment(R.layout.authorization_fragment) {
         super.onViewCreated(view, savedInstanceState)
 
         loginButton.setOnClickListener{
-            auth.signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        Toast.makeText(requireContext(), "Авторизация успешна", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_authFragment_to_recyclerFragment, createBundle(emailEditText.text.toString()))
-
-                    } else {
-                        Toast.makeText(requireContext(), "Ошибка авторизации", Toast.LENGTH_SHORT).show()
+            if (emailEditText.text.toString().isNotEmpty() &&
+                passwordEditText.text.toString().isNotEmpty())
+            {
+                auth.signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString())
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        if (task.isSuccessful) {
+                            findNavController().navigate(R.id.action_authFragment_to_recyclerFragment, createBundle(emailEditText.text.toString()))
+                        } else {
+                            val ex = task.exception.toString()
+                            if (ex.contains("formatted")){
+                                Toast.makeText(requireContext(), "Некорректный формат почты", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(requireContext(), "Ошибка. Проверьте данные", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
-                }
+            } else {
+                Toast.makeText(requireContext(), "Заполните все поля", Toast.LENGTH_SHORT).show()
+            }
         }
 
         regButton.setOnClickListener {
