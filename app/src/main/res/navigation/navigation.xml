@@ -34,5 +34,17 @@
         <action
             android:id="@+id/action_recyclerFragment_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_recyclerFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.example.fbdop.Fragments.ShopFragment"
+        android:label="ShopFragment"
+        tools:layout="@layout/shop_fragment">
+        <action
+            android:id="@+id/action_shopFragment_to_recyclerFragment"
+            app:destination="@id/recyclerFragment" />
     </fragment>
 </navigation>

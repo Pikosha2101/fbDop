@@ -48,6 +48,8 @@ dependencies {
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("jp.wasabeef:picasso-transformations:2.4.0")
     implementation ("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
     implementation(platform("com.google.firebase:firebase-bom:32.5.0"))

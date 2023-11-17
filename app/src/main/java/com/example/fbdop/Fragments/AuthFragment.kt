@@ -26,6 +26,7 @@ class AuthFragment : Fragment(R.layout.authorization_fragment) {
     ): View {
         _binding = AuthorizationFragmentBinding.inflate(inflater, container, false)
         auth = Firebase.auth
+
         return binding.root
     }
 
@@ -39,7 +40,7 @@ class AuthFragment : Fragment(R.layout.authorization_fragment) {
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(requireContext(), "Авторизация успешна", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.action_authFragment_to_recyclerFragment)
+                        findNavController().navigate(R.id.action_authFragment_to_recyclerFragment, createBundle(emailEditText.text.toString()))
 
                     } else {
                         Toast.makeText(requireContext(), "Ошибка авторизации", Toast.LENGTH_SHORT).show()
@@ -57,5 +58,15 @@ class AuthFragment : Fragment(R.layout.authorization_fragment) {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+
+
+    private fun createBundle(
+        email: String
+    ): Bundle {
+        val bundle = Bundle()
+        bundle.putString("email", email)
+        return bundle
     }
 }
