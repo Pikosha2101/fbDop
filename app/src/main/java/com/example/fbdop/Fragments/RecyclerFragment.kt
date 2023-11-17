@@ -24,11 +24,12 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
     private var _binding : RecyclerFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-
     private val adapter = RecyclerAdapter(this)
     private val db = Firebase.firestore
     private val shopList : MutableList<ProductModel> = mutableListOf()
     private lateinit var email : String
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,45 +64,8 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
                     Log.e("FirestoreQuery", "Error getting user data", exception)
                 }
         } catch (ex : Exception){
-            Toast.makeText(requireContext(), "Ошибка 1", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Ошибка", Toast.LENGTH_SHORT).show()
         }
-
-
-        /*adapter.setList(
-            *//*listOf(
-                ProductModel(
-                    1,
-                    "https://cdn-icons-png.flaticon.com/512/6034/6034226.png",
-                    "Молоко",
-                    140
-                ),
-                ProductModel(
-                    2,
-                    "https://cdn-icons-png.flaticon.com/512/6182/6182395.png",
-                    "Хлеб",
-                    70
-                ),
-                ProductModel(
-                    3,
-                    "https://cdn-icons-png.flaticon.com/512/5900/5900369.png",
-                    "Сыр",
-                    300
-                ),
-                ProductModel(
-                    4,
-                    "https://cdn-icons-png.flaticon.com/512/5589/5589303.png",
-                    "Колбаса",
-                    400
-                ),
-                ProductModel(
-                    5,
-                    "https://cdn-icons-png.flaticon.com/512/5370/5370584.png",
-                    "Кутчуп",
-                    150
-                )
-            )*//*
-            list
-        )*/
         return binding.root
     }
 
@@ -120,9 +84,6 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
             )
             findNavController().navigate(R.id.action_recyclerFragment_to_shopFragment, bundle)
         }
-
-        /*recyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        recyclerView.adapter = adapter*/
     }
 
 
@@ -131,6 +92,8 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
         super.onDestroy()
         _binding = null
     }
+
+
 
     override fun onClick1(param: ProductModel) {
         Toast.makeText(requireContext(), "Удалено", Toast.LENGTH_SHORT).show()
@@ -147,10 +110,13 @@ class RecyclerFragment : Fragment(R.layout.recycler_fragment), Listener<ProductM
         }
     }
 
+
+
     override fun onClick2(param: ProductModel) {
         Toast.makeText(requireContext(), "Добавлено", Toast.LENGTH_SHORT).show()
         shopList.add(ProductModel(param.id, param.image, param.name, param.price))
     }
+
 
 
     private fun createBundle(

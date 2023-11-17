@@ -24,8 +24,6 @@ class ShopFragment : Fragment(R.layout.shop_fragment) {
     private lateinit var email : String
     private lateinit var productList: List<ProductModel>
     private val productMap : MutableMap<ProductModel, Int> = mutableMapOf()
-
-
     private var userAddress : String = ""
     private var userPhone : String = ""
     private val db = Firebase.firestore
